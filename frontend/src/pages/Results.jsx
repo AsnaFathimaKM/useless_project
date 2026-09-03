@@ -104,7 +104,7 @@ export default function Results() {
         setLoadingLeaderboard(true);
 
         const response = await fetch(
-          "http://127.0.0.1:8000/api/leaderboard"
+          "/api/leaderboard"
         );
 
         const data =
