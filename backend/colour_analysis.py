@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from skimage import color
 
 
 def extract_tooth_colour(
@@ -9,25 +8,16 @@ def extract_tooth_colour(
 ):
     """
     Extracts a robust representative LAB colour from the
-    detected tooth pixels, plus the real spread (std) of that
-    same stable pixel set - used downstream only to report an
-    honest measurement confidence, never to alter the colour
-    reading itself.
+    detected tooth pixels.
 
-    The method:
-    1. Uses only pixels inside the tooth mask.
-    2. Removes extremely dark and extremely bright pixels.
-    3. Removes colour outliers.
-    4. Uses a central percentile range instead of blindly
-       trusting every detected pixel.
-    5. Returns the median LAB value and its pixel-spread (std).
-
-    This is intended for the ToothCheck demo and is NOT
-    a clinical dental colour measurement.
+    Uses OpenCV for RGB -> LAB conversion instead of scikit-image.
 
     Returns:
         (L, a, b), (std_L, std_a, std_b)
         or (None, None) if extraction failed.
+
+    This is intended for the ToothCheck demo and is NOT
+    a clinical dental colour measurement.
     """
 
     if (
@@ -65,10 +55,6 @@ def extract_tooth_colour(
     # ---------------------------------------------------------
     # REMOVE EXTREME CAMERA VALUES
     # ---------------------------------------------------------
-    #
-    # Very dark pixels are usually shadows/background.
-    # Very bright pixels can be specular reflections.
-    #
 
     brightness = np.mean(
         pixels.astype(np.float32),
@@ -100,31 +86,53 @@ def extract_tooth_colour(
     # BGR -> RGB
     # ---------------------------------------------------------
 
-    rgb_pixels = (
-        pixels[:, ::-1]
-        .astype(np.float64)
-        / 255.0
-    )
+    rgb_pixels = pixels[:, ::-1]
 
     # ---------------------------------------------------------
     # RGB -> LAB
+    #
+    # OpenCV stores:
+    #   L = 0..255
+    #   a = 0..255 with 128 as zero
+    #   b = 0..255 with 128 as zero
+    #
+    # Convert to standard CIE Lab:
+    #   L = 0..100
+    #   a approximately -128..127
+    #   b approximately -128..127
     # ---------------------------------------------------------
 
-    rgb_pixels_reshaped = (
-        rgb_pixels.reshape(-1, 1, 3)
+    rgb_image = rgb_pixels.reshape(-1, 1, 3)
+
+    lab_opencv = cv2.cvtColor(
+        rgb_image,
+        cv2.COLOR_RGB2LAB
+    ).reshape(-1, 3)
+
+    lab_pixels = np.empty(
+        lab_opencv.shape,
+        dtype=np.float64
     )
 
-    lab_pixels = color.rgb2lab(
-        rgb_pixels_reshaped
-    ).reshape(-1, 3)
+    lab_pixels[:, 0] = (
+        lab_opencv[:, 0].astype(np.float64)
+        * 100.0
+        / 255.0
+    )
+
+    lab_pixels[:, 1] = (
+        lab_opencv[:, 1].astype(np.float64)
+        - 128.0
+    )
+
+    lab_pixels[:, 2] = (
+        lab_opencv[:, 2].astype(np.float64)
+        - 128.0
+    )
 
     # ---------------------------------------------------------
     # REMOVE LAB OUTLIERS
     # ---------------------------------------------------------
-    #
-    # Instead of allowing a small unusual region to influence
-    # the result, keep the central 80% of the LAB distribution.
-    #
 
     lab_median = np.median(
         lab_pixels,
@@ -162,7 +170,7 @@ def extract_tooth_colour(
     b = float(representative_lab[2])
 
     # ---------------------------------------------------------
-    # REAL PIXEL SPREAD (for honest confidence reporting only)
+    # REAL PIXEL SPREAD
     # ---------------------------------------------------------
 
     std_lab = np.std(
