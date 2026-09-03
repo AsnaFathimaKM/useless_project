@@ -4,36 +4,41 @@ import { useNavigate } from "react-router-dom";
 export default function Scan() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const streamRef = useRef(null);
 
   const navigate = useNavigate();
 
-  const [stream, setStream] = useState(null);
   const [scanning, setScanning] = useState(false);
+  const [name, setName] = useState("");
+
   const [message, setMessage] = useState(
     "Align your teeth with the cat's mouth"
   );
 
   useEffect(() => {
-    let currentStream = null;
-
     async function startCamera() {
       try {
-        currentStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: "user",
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-          },
-          audio: false,
-        });
+        const currentStream =
+          await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: "user",
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+            },
+            audio: false,
+          });
 
-        setStream(currentStream);
+        streamRef.current = currentStream;
 
         if (videoRef.current) {
-          videoRef.current.srcObject = currentStream;
+          videoRef.current.srcObject =
+            currentStream;
         }
       } catch (error) {
-        console.error("Camera error:", error);
+        console.error(
+          "Camera error:",
+          error
+        );
 
         setMessage(
           "Camera access failed. Please allow camera permission."
@@ -44,33 +49,56 @@ export default function Scan() {
     startCamera();
 
     return () => {
-      if (currentStream) {
-        currentStream.getTracks().forEach((track) => track.stop());
+      if (streamRef.current) {
+        streamRef.current
+          .getTracks()
+          .forEach((track) => track.stop());
+
+        streamRef.current = null;
       }
     };
   }, []);
 
   async function captureAndAnalyze() {
-    if (!videoRef.current) return;
+    if (!videoRef.current) {
+      return;
+    }
+
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      setMessage(
+        "Please enter your name first."
+      );
+      return;
+    }
 
     setScanning(true);
-    setMessage("Analyzing your teeth...");
+
+    setMessage(
+      "Analyzing your teeth..."
+    );
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
+
+    if (
+      !video.videoWidth ||
+      !video.videoHeight
+    ) {
+      setMessage(
+        "Camera is not ready yet. Please wait a moment and try again."
+      );
+
+      setScanning(false);
+      return;
+    }
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
     const ctx = canvas.getContext("2d");
 
-    /*
-      IMPORTANT:
-      Send the complete camera frame to FastAPI.
-
-      We only visually crop the camera on the frontend.
-      MediaPipe still receives the complete face.
-    */
     ctx.drawImage(
       video,
       0,
@@ -79,27 +107,45 @@ export default function Scan() {
       canvas.height
     );
 
-    const imageData = canvas.toDataURL("image/jpeg", 0.9);
+    const imageData =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.9
+      );
 
     try {
       const response = await fetch(
         "http://127.0.0.1:8000/api/analyze",
         {
           method: "POST",
-
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type":
+              "application/json",
           },
-
           body: JSON.stringify({
             image: imageData,
           }),
         }
       );
 
-      const data = await response.json();
+      const data =
+        await response.json();
 
-      console.log("Backend result:", data);
+      console.log(
+        "Backend result:",
+        data
+      );
+
+      if (!response.ok) {
+        setMessage(
+          data.detail ||
+            data.message ||
+            "Backend returned an error."
+        );
+
+        setScanning(false);
+        return;
+      }
 
       if (data.error) {
         setMessage(
@@ -111,19 +157,117 @@ export default function Scan() {
         return;
       }
 
+      /*
+       * Create a unique ID for this scan.
+       */
+      const scanId = Date.now();
+
+      /*
+       * Save the current result.
+       */
+      const resultWithName = {
+        ...data,
+        name: trimmedName,
+        id: scanId,
+      };
+
       localStorage.setItem(
         "toothCheckResult",
-        JSON.stringify(data)
+        JSON.stringify(
+          resultWithName
+        )
       );
 
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      /*
+       * Load existing leaderboard.
+       */
+      let existingLeaderboard = [];
+
+      try {
+        existingLeaderboard =
+          JSON.parse(
+            localStorage.getItem(
+              "palluPremierLeague"
+            ) || "[]"
+          );
+
+        if (
+          !Array.isArray(
+            existingLeaderboard
+          )
+        ) {
+          existingLeaderboard = [];
+        }
+      } catch (error) {
+        console.error(
+          "Could not read leaderboard:",
+          error
+        );
+
+        existingLeaderboard = [];
       }
 
-      navigate("/results");
+      /*
+       * Create leaderboard entry.
+       */
+      const newEntry = {
+        name: trimmedName,
+        score:
+          Number(
+            data.whiteness_score
+          ) || 0,
+        id: scanId,
+      };
 
+      /*
+       * Add the new player.
+       */
+      const updatedLeaderboard = [
+        ...existingLeaderboard,
+        newEntry,
+      ];
+
+      /*
+       * Highest score first.
+       */
+      updatedLeaderboard.sort(
+        (a, b) =>
+          Number(b.score) -
+          Number(a.score)
+      );
+
+      /*
+       * Save leaderboard.
+       */
+      localStorage.setItem(
+        "palluPremierLeague",
+        JSON.stringify(
+          updatedLeaderboard
+        )
+      );
+
+      /*
+       * Stop the camera.
+       */
+      if (streamRef.current) {
+        streamRef.current
+          .getTracks()
+          .forEach((track) =>
+            track.stop()
+          );
+
+        streamRef.current = null;
+      }
+
+      /*
+       * Go to results page.
+       */
+      navigate("/results");
     } catch (error) {
-      console.error("Analysis error:", error);
+      console.error(
+        "Analysis error:",
+        error
+      );
 
       setMessage(
         "Could not connect to the ToothCheck backend."
@@ -136,8 +280,6 @@ export default function Scan() {
   return (
     <div className="scan-page">
 
-      {/* TITLE */}
-
       <h1>
         Position your teeth in the frame
       </h1>
@@ -146,25 +288,13 @@ export default function Scan() {
         Align your teeth with the cat's mouth
       </p>
 
-
-      {/* ================================================= */}
-      {/* CAT IMAGE + LIVE CAMERA                         */}
-      {/* ================================================= */}
-
       <div className="cat-camera">
-
-        {/* CAT IMAGE */}
 
         <img
           src="/cat-mouth-guide.jpeg"
           alt="ToothCheck cat guide"
           className="cat-image"
         />
-
-
-        {/* ================================================= */}
-        {/* LIVE CAMERA                                      */}
-        {/* ================================================= */}
 
         <div className="mouth-camera">
 
@@ -177,9 +307,6 @@ export default function Scan() {
 
         </div>
 
-
-        {/* CAMERA LABEL */}
-
         <div className="camera-label">
 
           <span className="camera-dot"></span>
@@ -190,11 +317,6 @@ export default function Scan() {
 
       </div>
 
-
-      {/* ================================================= */}
-      {/* INSTRUCTION                                      */}
-      {/* ================================================= */}
-
       <div className="scan-instruction">
 
         <div className="tooth-circle">
@@ -202,15 +324,31 @@ export default function Scan() {
         </div>
 
         <span>
-          Make sure your teeth are clearly visible and well-lit.
+          Make sure your teeth are clearly
+          visible and well-lit.
         </span>
 
       </div>
 
+      <div className="name-input-container">
 
-      {/* ================================================= */}
-      {/* CAPTURE BUTTON                                   */}
-      {/* ================================================= */}
+        <label htmlFor="player-name">
+          Enter your name
+        </label>
+
+        <input
+          id="player-name"
+          type="text"
+          value={name}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
+          placeholder="Your name"
+          maxLength={30}
+          disabled={scanning}
+        />
+
+      </div>
 
       <button
         className="capture-button"
@@ -222,23 +360,21 @@ export default function Scan() {
           ▣
         </span>
 
-        {scanning ? "Analyzing..." : "Capture"}
+        {scanning
+          ? "Analyzing..."
+          : "Capture"}
 
       </button>
-
-
-      {/* STATUS */}
 
       <div className="scan-status">
         {message}
       </div>
 
-
-      {/* HIDDEN CANVAS */}
-
       <canvas
         ref={canvasRef}
-        style={{ display: "none" }}
+        style={{
+          display: "none",
+        }}
       />
 
     </div>

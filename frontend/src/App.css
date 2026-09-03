@@ -1,366 +1,73 @@
-/* ========================================================= */
-/* ORIGINAL APP STYLES                                      */
-/* ========================================================= */
-
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg)
-      rotateY(39deg) scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg)
-      rotateY(39deg) scale(0.8);
-  }
-}
-
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+#root {
   width: 100%;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+  min-height: 100vh;
 }
 
+* {
+  box-sizing: border-box;
+}
 
-/* ========================================================= */
-/* TOOTHCHECK SCAN PAGE                                     */
-/* ========================================================= */
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
 
 .scan-page {
   min-height: 100vh;
-  width: 100%;
-
-  background: #ffffff;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding: 35px 20px 45px;
-
-  box-sizing: border-box;
-
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 30px 20px 50px;
+  background: #ffffff;
 }
-
-
-/* ========================================================= */
-/* TITLE                                                     */
-/* ========================================================= */
 
 .scan-page h1 {
   margin: 0;
-
-  color: #171b20;
-
-  font-size: 40px;
-
-  line-height: 1.2;
-
+  font-size: 32px;
   font-weight: 700;
-
+  color: #222222;
   text-align: center;
 }
 
 .scan-subtitle {
-  margin: 8px 0 25px;
-
-  color: #5e6670;
-
-  font-size: 20px;
-
+  margin: 8px 0 24px;
+  color: #666666;
+  font-size: 16px;
   text-align: center;
 }
 
-
-/* ========================================================= */
-/* CAT IMAGE                                                  */
-/* ========================================================= */
-
-/*
-   IMPORTANT:
-
-   The photograph is ALWAYS kept at exactly
-   the same aspect ratio as the original:
-
-   874 x 1111
-
-   There is NO max-height.
-
-   This prevents the mouth position from
-   moving when browser zoom changes.
-*/
-
 .cat-camera {
   position: relative;
-
   width: min(90vw, 900px);
-
   aspect-ratio: 874 / 1111;
-
   overflow: hidden;
-
   border-radius: 18px;
-
   background: #111111;
-
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-
   flex-shrink: 0;
 }
 
-
-/* ========================================================= */
-/* CAT PHOTO                                                  */
-/* ========================================================= */
-
 .cat-image {
   position: absolute;
-
   inset: 0;
-
   width: 100%;
   height: 100%;
-
   object-fit: fill;
-
   display: block;
-
   z-index: 1;
 }
 
-
-/* ========================================================= */
-/* LIVE CAMERA                                                 */
-/* ========================================================= */
-
-/*
-   ACTUAL CAT MOUTH LOCATION
-
-   Original photograph:
-   874 x 1111
-
-   Mouth approximately:
-
-   left   = 320
-   top    = 610
-   right  = 590
-   bottom = 760
-
-   Converted to percentages.
-*/
-
-
 .mouth-camera {
   position: absolute;
-
-  /*
-     320 / 874 = 36.61%
-  */
   left: 36.6%;
-
-  /*
-     610 / 1111 = 54.91%
-  */
   top: 54.9%;
-
-  /*
-     270 / 874 = 30.89%
-  */
   width: 30.9%;
-
-  /*
-     150 / 1111 = 13.50%
-  */
   height: 13.5%;
-
   z-index: 5;
-
   overflow: hidden;
-
   background: #111111;
-
-  /*
-     NO border-radius.
-     NO oval.
-
-     We use a detailed mouth contour below.
-  */
-
   clip-path: polygon(
-    /* ---- upper left lip ---- */
-
     0% 35%,
     2% 29%,
     5% 24%,
@@ -372,11 +79,7 @@
     40% 11%,
     45% 16%,
     48% 21%,
-
-    /* ---- centre upper lip ---- */
-
     50% 24%,
-
     52% 21%,
     55% 16%,
     60% 11%,
@@ -388,9 +91,6 @@
     95% 26%,
     98% 32%,
     100% 38%,
-
-    /* ---- right mouth corner ---- */
-
     99% 47%,
     97% 55%,
     94% 63%,
@@ -401,14 +101,8 @@
     68% 92%,
     60% 96%,
     53% 99%,
-
-    /* ---- bottom centre ---- */
-
     50% 100%,
     47% 99%,
-
-    /* ---- lower left ---- */
-
     40% 97%,
     32% 93%,
     25% 89%,
@@ -421,317 +115,356 @@
   );
 }
 
-
-/* ========================================================= */
-/* ZOOMED CAMERA VIDEO                                       */
-/* ========================================================= */
-
-/*
-   The camera itself is MUCH more zoomed in.
-
-   The user can sit farther away from the
-   laptop.
-
-   Only the central mouth/teeth area of
-   the webcam is shown through the cat mouth.
-*/
-
 .mouth-camera video {
   position: absolute;
-
   left: 50%;
   top: 50%;
-
   width: 100%;
   height: 100%;
-
   display: block;
-
   object-fit: cover;
-
-  /*
-     6x zoom.
-
-     Increase/decrease ONLY this number
-     if the teeth are too small/large.
-  */
-
-  transform:
-    translate(-50%, -50%)
-    scaleX(-1)
-    scale(6);
-
+  transform: translate(-50%, -50%) scaleX(-1) scale(6);
   transform-origin: center center;
 }
 
-
-/* ========================================================= */
-/* CAMERA LABEL                                               */
-/* ========================================================= */
-
 .camera-label {
   position: absolute;
-
-  top: 20px;
-  left: 20px;
-
+  left: 18px;
+  top: 18px;
   z-index: 10;
-
   display: flex;
-
   align-items: center;
-
-  gap: 10px;
-
-  padding: 10px 17px;
-
-  border-radius: 13px;
-
-  background: rgba(35, 25, 18, 0.88);
-
-  color: #ffffff;
-
-  font-size: 18px;
-
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .camera-dot {
-  width: 11px;
-  height: 11px;
-
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-
-  background: #22c55e;
-
-  flex-shrink: 0;
+  background: #ff3b30;
 }
 
-
-/* ========================================================= */
-/* INSTRUCTION                                                */
-/* ========================================================= */
-
 .scan-instruction {
-  width: min(90vw, 900px);
-
-  margin-top: 18px;
-
-  padding: 14px 20px;
-
-  box-sizing: border-box;
-
-  border-radius: 14px;
-
-  background: #f5f6f7;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
-  gap: 13px;
-
-  color: #555d66;
-
-  font-size: 17px;
-
+  gap: 10px;
+  margin-top: 18px;
+  color: #555555;
+  font-size: 14px;
   text-align: center;
 }
 
-
-/* ========================================================= */
-/* TOOTH ICON                                                 */
-/* ========================================================= */
-
 .tooth-circle {
-  width: 35px;
-  height: 35px;
-
-  border: 2px solid #20b957;
-
-  border-radius: 50%;
-
+  width: 28px;
+  height: 28px;
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
+  border-radius: 50%;
+  background: #f1f1f1;
   flex-shrink: 0;
 }
 
 .tooth-circle span {
-  color: #20b957;
-
-  font-size: 20px;
+  font-size: 15px;
 }
 
+.name-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  margin: 18px 0 14px;
+}
 
-/* ========================================================= */
-/* CAPTURE BUTTON                                             */
-/* ========================================================= */
+.name-input-container label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.name-input-container input {
+  width: min(300px, 80vw);
+  padding: 11px 14px;
+  border: 1px solid #cccccc;
+  border-radius: 9px;
+  outline: none;
+  font-size: 15px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.name-input-container input:focus {
+  border-color: #777777;
+}
+
+.name-input-container input::placeholder {
+  color: #999999;
+}
 
 .capture-button {
-  margin-top: 22px;
-
-  width: 320px;
-
-  max-width: 85vw;
-
-  height: 64px;
-
-  border: none;
-
-  border-radius: 13px;
-
-  background: #16b84e;
-
-  color: #ffffff;
-
-  font-size: 21px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
-  gap: 12px;
-
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease;
+  gap: 9px;
+  margin-top: 8px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  background: #222222;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.capture-button:hover {
-  background: #119c43;
-
+.capture-button:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
 .capture-button:disabled {
-  background: #8bbd9b;
-
+  opacity: 0.6;
   cursor: not-allowed;
-
-  transform: none;
 }
 
 .capture-camera-icon {
-  font-size: 25px;
+  font-size: 15px;
 }
-
-
-/* ========================================================= */
-/* STATUS                                                     */
-/* ========================================================= */
 
 .scan-status {
   margin-top: 12px;
-
-  min-height: 20px;
-
+  max-width: 500px;
   color: #666666;
-
   font-size: 14px;
-
   text-align: center;
 }
 
-
-/* ========================================================= */
-/* TABLET                                                     */
-/* ========================================================= */
-
-@media (max-width: 1024px) {
-
-  .scan-page {
-    padding-top: 28px;
-  }
-
-  .scan-page h1 {
-    font-size: 34px;
-  }
-
-  .scan-subtitle {
-    font-size: 18px;
-  }
-
-  .cat-camera {
-    width: min(92vw, 700px);
-  }
-
-  .scan-instruction {
-    width: min(92vw, 700px);
-  }
+.results-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #ffffff;
+  padding: 45px 20px;
+  box-sizing: border-box;
 }
 
+.results-container {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
 
-/* ========================================================= */
-/* MOBILE                                                     */
-/* ========================================================= */
+.veluppu-meter {
+  width: 420px;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+.veluppu-meter h1 {
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #222222;
+}
+
+.gauge {
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.gauge-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.gauge-tick {
+  stroke: #222222;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Fixed: let the SVG transform control the needle position */
+.gauge-needle {
+  transition: transform 1s ease-out;
+}
+
+.gauge-score {
+  font-size: 27px;
+  font-weight: 700;
+  fill: #222222;
+}
+
+.gauge-out-of {
+  font-size: 11px;
+  font-weight: 500;
+  fill: #666666;
+}
+
+.gauge-label {
+  position: absolute;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.gauge-label-0 {
+  left: 6%;
+  bottom: 1%;
+}
+
+.gauge-label-25 {
+  left: 24%;
+  top: 27%;
+}
+
+.gauge-label-50 {
+  left: 50%;
+  top: 3%;
+  transform: translateX(-50%);
+}
+
+.gauge-label-75 {
+  right: 24%;
+  top: 27%;
+}
+
+.gauge-label-100 {
+  right: 6%;
+  bottom: 1%;
+}
+
+.pallu-league {
+  width: 100%;
+  max-width: 560px;
+  margin: 35px auto 0;
+}
+
+.pallu-league h2 {
+  margin: 0 0 18px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #222222;
+}
+
+.leaderboard {
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 55px 1fr 80px;
+  align-items: center;
+  min-height: 54px;
+  padding: 0 18px;
+  border-bottom: 1px solid #eeeeee;
+  box-sizing: border-box;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-row.current-player {
+  background: #f3f0ff;
+  font-weight: 700;
+}
+
+.leaderboard-rank {
+  text-align: left;
+  font-weight: 700;
+  color: #555555;
+}
+
+.leaderboard-name {
+  text-align: left;
+  font-size: 16px;
+  color: #222222;
+}
+
+.leaderboard-score {
+  text-align: right;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222222;
+}
+
+.scan-again-button {
+  margin-top: 25px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: #222222;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.scan-again-button:hover {
+  opacity: 0.9;
+}
 
 @media (max-width: 600px) {
-
   .scan-page {
-    padding: 22px 12px 35px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .scan-page h1 {
-    font-size: 27px;
-  }
-
-  .scan-subtitle {
-    margin-top: 7px;
-    margin-bottom: 18px;
-
-    font-size: 16px;
+    font-size: 26px;
   }
 
   .cat-camera {
-    width: 94vw;
-
-    border-radius: 14px;
+    width: 95vw;
   }
 
-  .camera-label {
-    top: 12px;
-    left: 12px;
-
-    padding: 8px 12px;
-
-    font-size: 14px;
+  .veluppu-meter {
+    width: 360px;
   }
 
-  .camera-dot {
-    width: 9px;
-    height: 9px;
+  .gauge {
+    width: 350px;
   }
 
-  .scan-instruction {
-    width: 94vw;
-
-    padding: 12px;
-
-    font-size: 14px;
+  .veluppu-meter h1 {
+    font-size: 26px;
   }
 
-  .tooth-circle {
-    width: 30px;
-    height: 30px;
+  .pallu-league {
+    margin-top: 28px;
   }
 
-  .capture-button {
-    width: 260px;
+  .pallu-league h2 {
+    font-size: 22px;
+  }
 
-    height: 56px;
+  .leaderboard-row {
+    grid-template-columns: 45px 1fr 65px;
+    padding: 0 12px;
+  }
 
-    font-size: 18px;
+  .leaderboard-name {
+    font-size: 15px;
+  }
+
+  .leaderboard-score {
+    font-size: 17px;
   }
 }
