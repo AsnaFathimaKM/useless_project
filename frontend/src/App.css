@@ -13,6 +13,10 @@ body {
   min-height: 100vh;
 }
 
+/* =========================================================
+   SCAN PAGE
+   ========================================================= */
+
 .scan-page {
   min-height: 100vh;
   display: flex;
@@ -30,12 +34,31 @@ body {
   text-align: center;
 }
 
-.scan-subtitle {
-  margin: 8px 0 24px;
-  color: #666666;
-  font-size: 16px;
+/* =========================================================
+   PALLU TECHO TITLE
+   ========================================================= */
+
+.pallu-title {
+  margin: 0 0 55px;
+  font-family:
+    "Comic Sans MS",
+    "Arial Rounded MT Bold",
+    "Trebuchet MS",
+    sans-serif;
+  font-size: 150px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #222222;
   text-align: center;
+  line-height: 0.95;
+  transform: none;
+  text-shadow:
+    4px 4px 0px #eeeeee;
 }
+
+/* =========================================================
+   CAT CAMERA
+   ========================================================= */
 
 .cat-camera {
   position: relative;
@@ -241,46 +264,64 @@ body {
 
 .scan-status {
   margin-top: 12px;
-  max-width: 500px;
+  max-width: 700px;
   color: #666666;
   font-size: 14px;
   text-align: center;
 }
 
+/* =========================================================
+   NO TEETH ERROR
+   ========================================================= */
+
+.scan-error {
+  margin-top: 18px;
+  max-width: 800px;
+  color: #d60000;
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.7px;
+}
+
+/* =========================================================
+   RESULTS PAGE
+   ========================================================= */
+
 .results-page {
   min-height: 100vh;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   background: #ffffff;
-  padding: 45px 20px;
+  padding: 50px 20px 70px;
   box-sizing: border-box;
 }
 
-.results-container {
+.gauge-section {
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.veluppu-meter {
-  width: 420px;
-  max-width: 95vw;
-  margin: 0 auto;
-}
-
-.veluppu-meter h1 {
-  margin: 0 0 12px;
-  font-size: 30px;
-  font-weight: 700;
+.gauge-section h1 {
+  margin: 0 0 25px;
+  font-size: 36px;
+  font-weight: 800;
   color: #222222;
+  text-align: center;
 }
 
 .gauge {
   position: relative;
-  width: 400px;
-  max-width: 100%;
+  width: 480px;
+  max-width: 95vw;
   margin: 0 auto;
+  display: block;
 }
 
 .gauge-svg {
@@ -290,89 +331,58 @@ body {
   overflow: visible;
 }
 
-.gauge-tick {
-  stroke: #222222;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-/* Fixed: let the SVG transform control the needle position */
 .gauge-needle {
   transition: transform 1s ease-out;
 }
 
 .gauge-score {
-  font-size: 27px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   fill: #222222;
 }
 
 .gauge-out-of {
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 700;
   fill: #666666;
 }
 
 .gauge-label {
   position: absolute;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #333333;
 }
 
-.gauge-label-0 {
-  left: 6%;
-  bottom: 1%;
-}
-
-.gauge-label-25 {
-  left: 24%;
-  top: 27%;
-}
-
-.gauge-label-50 {
-  left: 50%;
-  top: 3%;
-  transform: translateX(-50%);
-}
-
-.gauge-label-75 {
-  right: 24%;
-  top: 27%;
-}
-
-.gauge-label-100 {
-  right: 6%;
-  bottom: 1%;
-}
-
-.pallu-league {
+.leaderboard-section {
   width: 100%;
-  max-width: 560px;
-  margin: 35px auto 0;
+  max-width: 750px;
+  margin: 75px auto 0;
+  text-align: center;
 }
 
-.pallu-league h2 {
-  margin: 0 0 18px;
-  font-size: 25px;
-  font-weight: 700;
+.leaderboard-section h2 {
+  margin: 0 0 25px;
+  font-size: 36px;
+  font-weight: 800;
   color: #222222;
+  text-align: center;
 }
 
 .leaderboard {
   width: 100%;
   border: 1px solid #e5e5e5;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
   background: #ffffff;
 }
 
 .leaderboard-row {
   display: grid;
-  grid-template-columns: 55px 1fr 80px;
+  grid-template-columns: 80px 1fr 100px;
   align-items: center;
-  min-height: 54px;
-  padding: 0 18px;
+  min-height: 68px;
+  padding: 0 25px;
   border-bottom: 1px solid #eeeeee;
   box-sizing: border-box;
 }
@@ -383,37 +393,47 @@ body {
 
 .leaderboard-row.current-player {
   background: #f3f0ff;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .leaderboard-rank {
-  text-align: left;
-  font-weight: 700;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 800;
   color: #555555;
 }
 
 .leaderboard-name {
-  text-align: left;
-  font-size: 16px;
-  color: #222222;
-}
-
-.leaderboard-score {
-  text-align: right;
-  font-size: 18px;
+  text-align: center;
+  font-size: 19px;
   font-weight: 700;
   color: #222222;
 }
 
+.leaderboard-score {
+  text-align: center;
+  font-size: 21px;
+  font-weight: 800;
+  color: #222222;
+}
+
+.leaderboard-loading,
+.leaderboard-empty {
+  text-align: center;
+  color: #666666;
+  font-size: 17px;
+  font-weight: 600;
+}
+
 .scan-again-button {
-  margin-top: 25px;
-  padding: 12px 25px;
+  margin-top: 30px;
+  padding: 13px 28px;
   border: none;
   border-radius: 10px;
   background: #222222;
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -421,50 +441,72 @@ body {
   opacity: 0.9;
 }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 600px) {
+
   .scan-page {
     padding-left: 12px;
     padding-right: 12px;
   }
 
+  .pallu-title {
+    font-size: 150px;
+    letter-spacing: 10px;
+    margin-bottom: 100px;
+  }
+
   .scan-page h1 {
-    font-size: 26px;
+    font-size: 150px;
   }
 
   .cat-camera {
     width: 95vw;
   }
 
-  .veluppu-meter {
-    width: 360px;
+  .scan-error {
+    font-size: 30px;
+  }
+
+  .results-page {
+    padding: 35px 15px 50px;
+  }
+
+  .gauge-section h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
   }
 
   .gauge {
-    width: 350px;
+    width: 390px;
+    max-width: 95vw;
   }
 
-  .veluppu-meter h1 {
-    font-size: 26px;
+  .leaderboard-section {
+    margin-top: 55px;
   }
 
-  .pallu-league {
-    margin-top: 28px;
-  }
-
-  .pallu-league h2 {
-    font-size: 22px;
+  .leaderboard-section h2 {
+    font-size: 30px;
   }
 
   .leaderboard-row {
-    grid-template-columns: 45px 1fr 65px;
+    grid-template-columns: 55px 1fr 75px;
+    min-height: 60px;
     padding: 0 12px;
   }
 
+  .leaderboard-rank {
+    font-size: 16px;
+  }
+
   .leaderboard-name {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .leaderboard-score {
-    font-size: 17px;
+    font-size: 18px;
   }
 }

@@ -15,6 +15,8 @@ export default function Scan() {
     "Align your teeth with the cat's mouth"
   );
 
+  const [errorMessage, setErrorMessage] = useState(false);
+
   useEffect(() => {
     async function startCamera() {
       try {
@@ -31,8 +33,7 @@ export default function Scan() {
         streamRef.current = currentStream;
 
         if (videoRef.current) {
-          videoRef.current.srcObject =
-            currentStream;
+          videoRef.current.srcObject = currentStream;
         }
       } catch (error) {
         console.error(
@@ -40,8 +41,10 @@ export default function Scan() {
           error
         );
 
+        setErrorMessage(true);
+
         setMessage(
-          "Camera access failed. Please allow camera permission."
+          "DON'T PRODUCE TOO MUCH!!!"
         );
       }
     }
@@ -64,40 +67,55 @@ export default function Scan() {
       return;
     }
 
-    const trimmedName = name.trim();
+    const trimmedName =
+      name.trim();
 
     if (!trimmedName) {
+      setErrorMessage(true);
+
       setMessage(
         "Please enter your name first."
       );
+
       return;
     }
 
     setScanning(true);
+    setErrorMessage(false);
 
     setMessage(
       "Analyzing your teeth..."
     );
 
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
+    const video =
+      videoRef.current;
+
+    const canvas =
+      canvasRef.current;
 
     if (
       !video.videoWidth ||
       !video.videoHeight
     ) {
+      setErrorMessage(true);
+
       setMessage(
-        "Camera is not ready yet. Please wait a moment and try again."
+        "DON'T PRODUCE TOO MUCH!!!"
       );
 
       setScanning(false);
+
       return;
     }
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width =
+      video.videoWidth;
 
-    const ctx = canvas.getContext("2d");
+    canvas.height =
+      video.videoHeight;
+
+    const ctx =
+      canvas.getContext("2d");
 
     ctx.drawImage(
       video,
@@ -114,19 +132,23 @@ export default function Scan() {
       );
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/analyze",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            image: imageData,
-          }),
-        }
-      );
+      const response =
+        await fetch(
+          "http://127.0.0.1:8000/api/analyze",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              image: imageData,
+              name: trimmedName,
+            }),
+          }
+        );
 
       const data =
         await response.json();
@@ -137,118 +159,36 @@ export default function Scan() {
       );
 
       if (!response.ok) {
+        setErrorMessage(true);
+
         setMessage(
-          data.detail ||
-            data.message ||
-            "Backend returned an error."
+          "DON'T PRODUCE TOO MUCH!!!"
         );
 
         setScanning(false);
+
         return;
       }
 
       if (data.error) {
+        setErrorMessage(true);
+
         setMessage(
-          data.messages?.join(" ") ||
-            "Could not analyze your teeth."
+          "DON'T PRODUCE TOO MUCH!!!"
         );
 
         setScanning(false);
+
         return;
       }
 
-      /*
-       * Create a unique ID for this scan.
-       */
-      const scanId = Date.now();
-
-      /*
-       * Save the current result.
-       */
-      const resultWithName = {
-        ...data,
-        name: trimmedName,
-        id: scanId,
-      };
+      setErrorMessage(false);
 
       localStorage.setItem(
         "toothCheckResult",
-        JSON.stringify(
-          resultWithName
-        )
+        JSON.stringify(data)
       );
 
-      /*
-       * Load existing leaderboard.
-       */
-      let existingLeaderboard = [];
-
-      try {
-        existingLeaderboard =
-          JSON.parse(
-            localStorage.getItem(
-              "palluPremierLeague"
-            ) || "[]"
-          );
-
-        if (
-          !Array.isArray(
-            existingLeaderboard
-          )
-        ) {
-          existingLeaderboard = [];
-        }
-      } catch (error) {
-        console.error(
-          "Could not read leaderboard:",
-          error
-        );
-
-        existingLeaderboard = [];
-      }
-
-      /*
-       * Create leaderboard entry.
-       */
-      const newEntry = {
-        name: trimmedName,
-        score:
-          Number(
-            data.whiteness_score
-          ) || 0,
-        id: scanId,
-      };
-
-      /*
-       * Add the new player.
-       */
-      const updatedLeaderboard = [
-        ...existingLeaderboard,
-        newEntry,
-      ];
-
-      /*
-       * Highest score first.
-       */
-      updatedLeaderboard.sort(
-        (a, b) =>
-          Number(b.score) -
-          Number(a.score)
-      );
-
-      /*
-       * Save leaderboard.
-       */
-      localStorage.setItem(
-        "palluPremierLeague",
-        JSON.stringify(
-          updatedLeaderboard
-        )
-      );
-
-      /*
-       * Stop the camera.
-       */
       if (streamRef.current) {
         streamRef.current
           .getTracks()
@@ -259,18 +199,18 @@ export default function Scan() {
         streamRef.current = null;
       }
 
-      /*
-       * Go to results page.
-       */
       navigate("/results");
+
     } catch (error) {
       console.error(
         "Analysis error:",
         error
       );
 
+      setErrorMessage(true);
+
       setMessage(
-        "Could not connect to the ToothCheck backend."
+        "DON'T PRODUCE TOO MUCH!!!"
       );
 
       setScanning(false);
@@ -280,13 +220,15 @@ export default function Scan() {
   return (
     <div className="scan-page">
 
-      <h1>
-        Position your teeth in the frame
-      </h1>
-
-      <p className="scan-subtitle">
-        Align your teeth with the cat's mouth
-      </p>
+    <h1
+    className="pallu-title"
+    style={{
+        fontSize: "80px",
+        color: "black",
+    }}
+    >
+    PALLU TECHO?
+    </h1>
 
       <div className="cat-camera">
 
@@ -320,7 +262,9 @@ export default function Scan() {
       <div className="scan-instruction">
 
         <div className="tooth-circle">
+
           <span>♡</span>
+
         </div>
 
         <span>
@@ -366,7 +310,13 @@ export default function Scan() {
 
       </button>
 
-      <div className="scan-status">
+      <div
+        className={
+          errorMessage
+            ? "scan-status scan-error"
+            : "scan-status"
+        }
+      >
         {message}
       </div>
 

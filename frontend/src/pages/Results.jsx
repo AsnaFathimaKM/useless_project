@@ -18,59 +18,65 @@ export default function Results() {
 
   const [result, setResult] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [loadingLeaderboard, setLoadingLeaderboard] = useState(true);
+
+  /* =========================================================
+     LOAD CURRENT SCAN RESULT
+  ========================================================= */
 
   useEffect(() => {
-    const savedResult = localStorage.getItem("toothCheckResult");
+    try {
+      const savedResult =
+        localStorage.getItem("toothCheckResult");
 
-    if (savedResult) {
-      try {
+      if (savedResult) {
         setResult(JSON.parse(savedResult));
-      } catch (error) {
-        console.error("Could not read saved result:", error);
       }
-    }
-
-    const savedLeaderboard =
-      localStorage.getItem("palluPremierLeague");
-
-    if (savedLeaderboard) {
-      try {
-        const parsed = JSON.parse(savedLeaderboard);
-
-        parsed.sort((a, b) => b.score - a.score);
-
-        setLeaderboard(parsed);
-      } catch (error) {
-        console.error("Could not read leaderboard:", error);
-      }
+    } catch (error) {
+      console.error(
+        "Could not read scan result:",
+        error
+      );
     }
   }, []);
 
-  // Play a random song based on the score
+
+  /* =========================================================
+     PLAY RANDOM SONG
+  ========================================================= */
+
   useEffect(() => {
     if (!result) {
       return;
     }
 
-    const score = Number(result.whiteness_score) || 0;
+    const score =
+      Number(result.whiteness_score) || 0;
 
     const songList =
-      score >= 60 ? GOOD_SONGS : BAD_SONGS;
+      score >= 60
+        ? GOOD_SONGS
+        : BAD_SONGS;
 
     if (songList.length === 0) {
       return;
     }
 
-    // Pick a random song
-    const randomIndex = Math.floor(
-      Math.random() * songList.length
+    const randomIndex =
+      Math.floor(
+        Math.random() * songList.length
+      );
+
+    const selectedSong =
+      songList[randomIndex];
+
+    console.log(
+      "Selected song:",
+      selectedSong
     );
 
-    const selectedSong = songList[randomIndex];
-
-    console.log("Selected song:", selectedSong);
-
-    const audio = new Audio(selectedSong);
+    const audio =
+      new Audio(selectedSong);
 
     audio.volume = 1.0;
 
@@ -87,20 +93,86 @@ export default function Results() {
     };
   }, [result]);
 
+
+  /* =========================================================
+     LOAD LEADERBOARD FROM DATABASE
+  ========================================================= */
+
+  useEffect(() => {
+    async function loadLeaderboard() {
+      try {
+        setLoadingLeaderboard(true);
+
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/leaderboard"
+        );
+
+        const data =
+          await response.json();
+
+        console.log(
+          "Database leaderboard:",
+          data
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "Failed to load leaderboard"
+          );
+        }
+
+        setLeaderboard(
+          Array.isArray(data.leaderboard)
+            ? data.leaderboard
+            : []
+        );
+      } catch (error) {
+        console.error(
+          "Leaderboard error:",
+          error
+        );
+
+        setLeaderboard([]);
+      } finally {
+        setLoadingLeaderboard(false);
+      }
+    }
+
+    loadLeaderboard();
+  }, []);
+
+
+  /* =========================================================
+     NO RESULT
+  ========================================================= */
+
   if (!result) {
     return (
       <div className="results-page">
-        <p>No results yet.</p>
+        <div className="results-container">
+          <h1>
+            Veluppu-o-Meter
+          </h1>
 
-        <button
-          className="scan-again-button"
-          onClick={() => navigate("/scan")}
-        >
-          Go Scan
-        </button>
+          <p>
+            No scan result found.
+          </p>
+
+          <button
+            className="scan-again-button"
+            onClick={() => navigate("/scan")}
+          >
+            Scan Again
+          </button>
+        </div>
       </div>
     );
   }
+
+
+  /* =========================================================
+     SCORE
+  ========================================================= */
 
   const score = Math.max(
     0,
@@ -110,198 +182,211 @@ export default function Results() {
     )
   );
 
-  const needleAngle = -90 + score * 1.8;
+  const needleAngle =
+    -90 + (score / 100) * 180;
+
+  const currentScanId =
+    Number(result.id);
+
+
+  /* =========================================================
+     RESULTS PAGE
+  ========================================================= */
 
   return (
     <div className="results-page">
-      <div className="results-container">
 
-        <div className="veluppu-meter">
-          <h1>Veluppu-o-Meter</h1>
+      {/* =====================================================
+          VELOPPU-O-METER
+      ===================================================== */}
 
-          <div className="gauge">
-            <svg
-              viewBox="0 0 220 135"
-              className="gauge-svg"
-            >
-              <defs>
-                <linearGradient
-                  id="gaugeGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="#ef4444"
-                  />
+      <div className="gauge-section">
 
-                  <stop
-                    offset="50%"
-                    stopColor="#facc15"
-                  />
+        <h1>
+          Veluppu-o-Meter
+        </h1>
 
-                  <stop
-                    offset="100%"
-                    stopColor="#22c55e"
-                  />
-                </linearGradient>
-              </defs>
+        <div className="gauge">
 
-              <path
-                d="M 20 110 A 90 90 0 0 1 200 110"
-                fill="none"
-                stroke="url(#gaugeGradient)"
-                strokeWidth="18"
-                strokeLinecap="round"
-              />
+          <svg
+            viewBox="0 0 220 130"
+            className="gauge-svg"
+          >
 
-              <line
-                className="gauge-tick"
-                x1="20"
-                y1="110"
-                x2="27"
-                y2="110"
-              />
+            <defs>
 
-              <line
-                className="gauge-tick"
-                x1="65"
-                y1="45"
-                x2="69"
-                y2="52"
-              />
-
-              <line
-                className="gauge-tick"
-                x1="110"
-                y1="20"
-                x2="110"
-                y2="29"
-              />
-
-              <line
-                className="gauge-tick"
-                x1="155"
-                y1="45"
-                x2="151"
-                y2="52"
-              />
-
-              <line
-                className="gauge-tick"
-                x1="200"
-                y1="110"
-                x2="193"
-                y2="110"
-              />
-
-              <g
-                className="gauge-needle"
-                transform={`rotate(${needleAngle} 110 110)`}
+              <linearGradient
+                id="gaugeGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
               >
-                <line
-                  x1="110"
-                  y1="110"
-                  x2="110"
-                  y2="38"
-                  stroke="#171717"
-                  strokeWidth="4"
-                  strokeLinecap="round"
+
+                <stop
+                  offset="0%"
+                  stopColor="#e53935"
                 />
 
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="7"
-                  fill="#171717"
+                <stop
+                  offset="50%"
+                  stopColor="#fbc02d"
                 />
-              </g>
 
-              <text
-                x="110"
-                y="101"
-                textAnchor="middle"
-                className="gauge-score"
-              >
-                {score}
-              </text>
+                <stop
+                  offset="100%"
+                  stopColor="#43a047"
+                />
 
-              <text
-                x="110"
-                y="120"
-                textAnchor="middle"
-                className="gauge-out-of"
-              >
-                / 100
-              </text>
-            </svg>
+              </linearGradient>
 
-            <div className="gauge-label gauge-label-0">
-              0
-            </div>
+            </defs>
 
-            <div className="gauge-label gauge-label-25">
-              25
-            </div>
 
-            <div className="gauge-label gauge-label-50">
-              50
-            </div>
+            {/* Gauge */}
 
-            <div className="gauge-label gauge-label-75">
-              75
-            </div>
+            <path
+              d="M 20 110 A 90 90 0 0 1 200 110"
+              fill="none"
+              stroke="url(#gaugeGradient)"
+              strokeWidth="22"
+              strokeLinecap="round"
+            />
 
-            <div className="gauge-label gauge-label-100">
-              100
-            </div>
+
+            {/* Needle */}
+
+            <line
+              x1="110"
+              y1="110"
+              x2="110"
+              y2="38"
+              stroke="black"
+              strokeWidth="5"
+              strokeLinecap="round"
+              className="gauge-needle"
+              style={{
+                transform: `rotate(${needleAngle}deg)`,
+                transformOrigin:
+                  "110px 110px",
+              }}
+            />
+
+
+            {/* Centre */}
+
+            <circle
+              cx="110"
+              cy="110"
+              r="8"
+              fill="black"
+            />
+
+          </svg>
+
+
+          {/* Score */}
+
+          <div className="gauge-score">
+            {score}
           </div>
+
         </div>
 
-        <div className="pallu-league">
-          <h2>Pallu Premier League</h2>
+      </div>
+
+
+      {/* =====================================================
+          PALLU PREMIER LEAGUE
+      ===================================================== */}
+
+      <div className="leaderboard-section">
+
+        <h2>
+          Pallu Premier League
+        </h2>
+
+
+        {loadingLeaderboard ? (
+
+          <p className="leaderboard-loading">
+            Loading leaderboard...
+          </p>
+
+        ) : leaderboard.length === 0 ? (
+
+          <p className="leaderboard-empty">
+            No scores yet.
+          </p>
+
+        ) : (
 
           <div className="leaderboard">
-            {leaderboard.map((player, index) => {
-              const isCurrentPlayer =
-                player.id === result.id;
 
-              return (
-                <div
-                  className={`leaderboard-row ${
-                    isCurrentPlayer
-                      ? "current-player"
-                      : ""
-                  }`}
-                  key={player.id}
-                >
-                  <div className="leaderboard-rank">
-                    {index + 1}
+            {leaderboard.map(
+              (player, index) => {
+
+                const isCurrentPlayer =
+                  Number(player.id) ===
+                  currentScanId;
+
+                return (
+
+                  <div
+                    key={player.id}
+                    className={`leaderboard-row ${
+                      isCurrentPlayer
+                        ? "current-player"
+                        : ""
+                    }`}
+                  >
+
+                    <div className="leaderboard-rank">
+                      {index + 1}
+                    </div>
+
+
+                    <div className="leaderboard-name">
+                      {player.name}
+                    </div>
+
+
+                    <div className="leaderboard-score">
+                      {Number(
+                        player.score
+                      ).toFixed(0)}
+                    </div>
+
                   </div>
 
-                  <div className="leaderboard-name">
-                    {player.name}
-                  </div>
+                );
+              }
+            )}
 
-                  <div className="leaderboard-score">
-                    {player.score}
-                  </div>
-                </div>
-              );
-            })}
           </div>
-        </div>
+
+        )}
+
+
+        {/* =================================================
+            SCAN AGAIN BUTTON
+        ================================================= */}
 
         <button
           className="scan-again-button"
-          onClick={() => navigate("/scan")}
+          onClick={() => {
+            localStorage.removeItem(
+              "toothCheckResult"
+            );
+
+            navigate("/scan");
+          }}
         >
           Scan Again
         </button>
 
       </div>
+
     </div>
   );
 }
