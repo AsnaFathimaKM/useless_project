@@ -2,7 +2,7 @@
 
 
 
-# [Project Name] 🎯
+# Pallu Techo?🎯
 
 
 ## Basic Details
