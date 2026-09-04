@@ -49,32 +49,20 @@ For Software:
 Home Screen: The main interface of Pallu Techo, where users position their teeth in the given space, enter their name, and capture their smile for analysis. 
 
 <img width="1600" height="812" alt="Pall Thecho error page" src="https://github.com/user-attachments/assets/3c1f658a-4269-4eb5-b13d-fe5f51449de2" />
-Error State: When the system detects an invalid or insufficient scan, it throws a dramatic warning
+Error State: When the system detects an invalid or insufficient scan, it throws a dramatic warning.
 
 <img width="1600" height="812" alt="Veluppometer and PPL" src="https://github.com/user-attachments/assets/89b4cebc-71f4-48af-b306-f17c8e39bb23" />
-*Add caption explaining what this shows*
+Results Screen: The Velluppu-O-Meter reveals the user’s tooth-whiteness score, while the Pallu Premier League ranks them against the other contenders.
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
 [Add your demo video link here]
 *Explain what the video demonstrates*
 
-# Additional Demos
-[Add any extra demo materials/links]
 
 ## Team Contributions
 - Asna Fathima KM: Frontend and deployment
