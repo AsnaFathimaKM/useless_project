@@ -60,6 +60,11 @@ Results Screen: The Velluppu-O-Meter reveals the user’s tooth-whiteness score,
 
 ### Project Demo
 # Video
+
+
+https://github.com/user-attachments/assets/ba1c5579-0371-476e-b415-39048852762d
+
+
 [Add your demo video link here]
 *Explain what the video demonstrates*
 
