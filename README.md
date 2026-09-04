@@ -10,8 +10,8 @@
 
 
 ### Team Members
- Asna Fathima KM - Model Engineering College
- Sreya Sudevan - Model Engineering College
+ -Asna Fathima KM - Model Engineering College
+ -Sreya Sudevan - Model Engineering College
 
 ### Project Description
 **Pall Techo?** is a fun project that detects and analyses the colour of your teeth through a webcam. It gives you a **Velluppu-O-Meter** score, roasts / compliments you wuth a BGM and lets you compete for the top spot in the **Pallu Premier League** - because apparently, even teeth need a leaderboard.
