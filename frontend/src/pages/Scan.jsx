@@ -134,7 +134,7 @@ export default function Scan() {
     try {
       const response =
         await fetch(
-          "/api/analyze",
+           "https://useless-project-skc4.onrender.com/api/analyze",
           {
             method: "POST",
 

@@ -104,7 +104,7 @@ export default function Results() {
         setLoadingLeaderboard(true);
 
         const response = await fetch(
-          "/api/leaderboard"
+           "https://useless-project-skc4.onrender.com/api/leaderboard"
         );
 
         const data =
