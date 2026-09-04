@@ -2,7 +2,7 @@
 
 
 
-# Pallu Techo?🎯
+# Pallu Techo?
 "Smile it up!!"
 
 ## Basic Details
