@@ -14,7 +14,7 @@
  - Sreya Sudevan - Model Engineering College
 
 ### Project Description
-**Pall Techo?** is a fun project that detects and analyses the colour of your teeth through a webcam. It gives you a **Velluppu-O-Meter** score, roasts / compliments you wuth a BGM and lets you compete for the top spot in the **Pallu Premier League** - because apparently, even teeth need a leaderboard.
+**Pallu Techo?** is a fun project that detects and analyses the colour of your teeth through a webcam. It gives you a **Velluppu-O-Meter** score, roasts / compliments you with a BGM and lets you compete for the top spot in the **Pallu Premier League** - because apparently, even teeth need a leaderboard.
 
 
 ### The Problem (that doesn't exist)
@@ -46,10 +46,10 @@ For Software:
 
 
 <img width="1600" height="812" alt="Pall Thecho home page" src="https://github.com/user-attachments/assets/9f93d253-6674-42e8-9645-13c72bf87c58" />
-*Add caption explaining what this shows*
+Home Screen: The main interface of Pallu Techo, where users position their teeth in the given space, enter their name, and capture their smile for analysis. 
 
 <img width="1600" height="812" alt="Pall Thecho error page" src="https://github.com/user-attachments/assets/3c1f658a-4269-4eb5-b13d-fe5f51449de2" />
-*Add caption explaining what this shows*
+Error State: When the system detects an invalid or insufficient scan, it throws a dramatic warning
 
 <img width="1600" height="812" alt="Veluppometer and PPL" src="https://github.com/user-attachments/assets/89b4cebc-71f4-48af-b306-f17c8e39bb23" />
 *Add caption explaining what this shows*
