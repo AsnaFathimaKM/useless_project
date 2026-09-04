@@ -3,25 +3,25 @@
 
 
 # Pallu Techo?🎯
-
+"Smile it up!!"
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Techquila
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+ Asna Fathima KM - Model Engineering College
+ Sreya Sudevan - Model Engineering College
 
 ### Project Description
-[2-3 lines about what your project does]
+**Pall Techo?** is a fun project that detects and analyses the colour of your teeth through a webcam. It gives you a **Velluppu-O-Meter** score, roasts / compliments you wuth a BGM and lets you compete for the top spot in the **Pallu Premier League** - because apparently, even teeth need a leaderboard.
+
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+**The problem of not knowing whose teeth are whiter — mine or my friend’s.**
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+By competing in the Pallu Premier League (PPL)
 
 ## Technical Details
 ### Technologies/Components Used
@@ -30,11 +30,6 @@ For Software:
 - [Frameworks used]
 - [Libraries used]
 - [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
 ### Implementation
 For Software:
@@ -61,15 +56,6 @@ For Software:
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
 
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
 # Build Photos
 ![Components](Add photo of your components here)
 *List out all components shown*
@@ -89,9 +75,8 @@ For Hardware:
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Asna Fathima KM: Frontend and deployment
+- Sreya Sudevan: Backend
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
