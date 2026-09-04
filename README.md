@@ -25,9 +25,7 @@ By competing in the Pallu Premier League (PPL)
 
 ## Technical Details
 ### Technologies/Components Used
-For Software:<img width="1600" height="803" alt="WhatsApp Image 2026-09-04 at 6 04 37 AM" src="https://github.com/user-attachments/assets/d4718ee8-036f-42e5-a950-561320ec0c9a" />
-<img width="1600" height="803" alt="WhatsApp Image 2026-09-04 at 6 04 37 AM" src="https://github.com/user-attachments/assets/532e7c5d-6a15-4230-b100-4c0c38e47621" />
-
+For Software:
 - [Languages used]
 - [Frameworks used]
 - [Libraries used]
@@ -45,6 +43,8 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
+
+
 ![Screenshot1](Add screenshot 1 here with proper name)
 *Add caption explaining what this shows*
 
