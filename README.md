@@ -48,10 +48,10 @@ For Software:
 <img width="1600" height="812" alt="Pall Thecho home page" src="https://github.com/user-attachments/assets/9f93d253-6674-42e8-9645-13c72bf87c58" />
 *Add caption explaining what this shows*
 
-![Screenshot2](Add screenshot 2 here with proper name)
+<img width="1600" height="812" alt="Pall Thecho error page" src="https://github.com/user-attachments/assets/3c1f658a-4269-4eb5-b13d-fe5f51449de2" />
 *Add caption explaining what this shows*
 
-![Screenshot3](Add screenshot 3 here with proper name)
+<img width="1600" height="812" alt="Veluppometer and PPL" src="https://github.com/user-attachments/assets/89b4cebc-71f4-48af-b306-f17c8e39bb23" />
 *Add caption explaining what this shows*
 
 # Diagrams
